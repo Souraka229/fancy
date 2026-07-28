@@ -15,7 +15,8 @@ const galleryImages = [
 const formatPrice = (value: number) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 
 export default function ProductDetailPage() {
-  const params = useParams<{ slug: string }>();
+  const params = useParams();
+  const slug = (params?.slug as string) || '';
   const { addToCart } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -29,10 +30,10 @@ export default function ProductDetailPage() {
           throw new Error("Failed to fetch product");
         }
         const data = (await response.json()) as Product[];
-        const matchedProduct = data.find((item) => item.slug === params.slug) ?? null;
+        const matchedProduct = data.find((item) => item.slug === slug) ?? null;
         setProduct(matchedProduct);
       } catch {
-        const matchedProduct = fallbackProducts.find((item) => item.slug === params.slug) ?? null;
+        const matchedProduct = fallbackProducts.find((item) => item.slug === slug) ?? null;
         setProduct(matchedProduct);
       } finally {
         setLoading(false);
@@ -40,7 +41,7 @@ export default function ProductDetailPage() {
     }
 
     loadProduct();
-  }, [params.slug]);
+  }, [slug]);
 
   const relatedProducts = useMemo(() => {
     if (!product) {
