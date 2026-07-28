@@ -1,0 +1,42 @@
+[
+  {
+    "id": 2,
+    "name": "Golden Link",
+    "slug": "golden-link",
+    "category": "Bijoux",
+    "price": 28000,
+    "promoPrice": 24000,
+    "badge": "Nouveau",
+    "description": "Collier fin à la fois sobre et sophistiqué pour tous les looks.",
+    "image": "https://images.unsplash.com/photo-1617038260897-41a1f14a8ca0?auto=format&fit=crop&w=900&q=80",
+    "stock": "3 restants",
+    "rating": 4.8,
+    "accent": "from-amber-700 to-yellow-600"
+  },
+  {
+    "id": 3,
+    "name": "Aura Speaker",
+    "slug": "aura-speaker",
+    "category": "Gadgets",
+    "price": 32000,
+    "badge": "Best Seller",
+    "description": "Mini enceinte connectée au design premium, idéale pour les déplacements.",
+    "image": "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?auto=format&fit=crop&w=900&q=80",
+    "stock": "En stock",
+    "rating": 4.7,
+    "accent": "from-slate-800 to-slate-600"
+  },
+  {
+    "id": 4,
+    "name": "Velvet Case",
+    "slug": "velvet-case",
+    "category": "Accessoires",
+    "price": 15000,
+    "badge": "Promo",
+    "description": "Étui premium en cuir velours avec finition impeccable.",
+    "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=80",
+    "stock": "En stock",
+    "rating": 4.6,
+    "accent": "from-neutral-700 to-stone-500"
+  }
+]
