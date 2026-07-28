@@ -3,14 +3,18 @@ import { supabase } from '@/lib/supabase';
 
 interface ProductPageLayoutProps {
   children: React.ReactNode;
-  params: { slug: string };
+  // Next's internal types may pass params as a Promise in some contexts; accept both.
+  params: { slug: string } | Promise<{ slug: string }>;
 }
 
-export async function generateMetadata({ params }: ProductPageLayoutProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: any }): Promise<Metadata> {
+  // params may be a Promise depending on Next's type emission; await if needed
+  const resolvedParams = params && typeof params.then === 'function' ? await params : params;
+
   const { data: product } = await supabase
     .from('products')
     .select('*, categories(*)')
-    .eq('slug', params.slug)
+    .eq('slug', resolvedParams.slug)
     .eq('is_active', true)
     .single();
 
@@ -67,6 +71,7 @@ export async function generateMetadata({ params }: ProductPageLayoutProps): Prom
 }
 
 export default function ProductPageLayout({ children, params }: ProductPageLayoutProps) {
+  // Layout may receive params as a Promise in some Next contexts; avoid strict typing here.
   return (
     <>
       {children}
