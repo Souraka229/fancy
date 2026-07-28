@@ -21,7 +21,8 @@ import {
 
 export default function ProductPage() {
   const params = useParams();
-  const slug = params.slug as string;
+  const slug = (params?.slug as string) || '';
+  // Note: slug may be empty during some render cycles; the effect handles it.
   
   const [product, setProduct] = useState<any>(null);
   const [similarProducts, setSimilarProducts] = useState<any[]>([]);
