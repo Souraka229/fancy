@@ -1,0 +1,111 @@
+{
+  "name": "daydays-fancy-design-tokens",
+  "version": "1.0",
+  "metadata": {
+    "brand": "DAYDAY'S FANCY",
+    "locale": "fr-FR",
+    "currency": "XOF"
+  },
+  "color": {
+    "bg": {
+      "900": "#050505",
+      "50": "#FFFFFF"
+    },
+    "surface": {
+      "800": "rgba(255,255,255,0.02)",
+      "100": "rgba(255,255,255,0.6)"
+    },
+    "accent": {
+      "500": "#FF6A00",
+      "600": "#E55B00"
+    },
+    "gold": {
+      "400": "#C9A84A"
+    },
+    "cream": {
+      "100": "#F7F3EE"
+    },
+    "gray": {
+      "400": "#7D7D84"
+    },
+    "muted": "rgba(255,255,255,0.28)",
+    "transparent": "transparent"
+  },
+  "typography": {
+    "fontFamily": "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+    "display": {
+      "1": "48px",
+      "h1": "32px",
+      "h2": "24px",
+      "h3": "18px"
+    },
+    "body": {
+      "lg": "16px",
+      "md": "14px",
+      "sm": "12px"
+    },
+    "weights": {
+      "light": 300,
+      "regular": 400,
+      "semibold": 600,
+      "bold": 700
+    }
+  },
+  "spacing": {
+    "xxs": "4px",
+    "xs": "8px",
+    "sm": "12px",
+    "md": "16px",
+    "lg": "24px",
+    "xl": "32px"
+  },
+  "shape": {
+    "radius": {
+      "sm": "6px",
+      "md": "12px",
+      "xl": "20px"
+    }
+  },
+  "elevation": {
+    "shadow-1": "0 6px 18px rgba(3,3,3,0.45)",
+    "glass-backdrop": "blur(12px)"
+  },
+  "motion": {
+    "easing": "cubic-bezier(.2,.9,.2,1)",
+    "duration": {
+      "micro": "120ms",
+      "short": "200ms",
+      "base": "360ms",
+      "long": "600ms"
+    }
+  },
+  "components": {
+    "floatingHeader": {
+      "heightMobile": "64px",
+      "glassAlpha": "0.06"
+    },
+    "bottomNav": {
+      "heightMobile": "72px",
+      "safeAreaPadding": "env(safe-area-inset-bottom, 12px)"
+    },
+    "productCard": {
+      "radius": "12px",
+      "liftScale": 1.04,
+      "imageRatio": "1:1"
+    },
+    "smartDiscountCard": {
+      "preClick": {
+        "label": "🔥 Offre limitée",
+        "badge": "-45%",
+        "cta": "Voir l'offre",
+        "height": "72px"
+      },
+      "postClick": {
+        "animation": "scaleClipReveal",
+        "savingsLabel": "Vous économisez 15 000 FCFA",
+        "cta": "Ajouter au panier",
+        "duration": "600ms"
+      }
+    }
+  }
+}

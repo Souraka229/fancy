@@ -1,0 +1,115 @@
+:root {
+  /* Colors (light default) */
+  --color-bg: #FFFFFF;
+  --color-surface: rgba(255,255,255,0.6);
+  --color-accent: #FF6A00;
+  --color-accent-strong: #E55B00;
+  --color-gold: #C9A84A;
+  --color-cream: #F7F3EE;
+  --color-gray: #7D7D84;
+  --color-muted: rgba(0,0,0,0.36);
+
+  /* Typography */
+  --font-family-base: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --display-1: 48px;
+  --h1: 32px;
+  --h2: 24px;
+  --h3: 18px;
+  --body-lg: 16px;
+  --body: 14px;
+  --caption: 12px;
+
+  /* Spacing */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* Shapes & elevation */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-xl: 20px;
+  --shadow-1: 0 6px 18px rgba(3,3,3,0.12);
+
+  /* Motion */
+  --easing: cubic-bezier(.2,.9,.2,1);
+  --dur-micro: 120ms;
+  --dur-short: 200ms;
+  --dur-base: 360ms;
+  --dur-long: 600ms;
+}
+
+/* Dark theme overrides */
+[data-theme="dark"] {
+  --color-bg: #050505;
+  --color-surface: rgba(255,255,255,0.02);
+  --color-accent: #FF6A00;
+  --color-accent-strong: #E55B00;
+  --color-gold: #C9A84A;
+  --color-cream: #F7F3EE;
+  --color-gray: #7D7D84;
+  --color-muted: rgba(255,255,255,0.28);
+  --shadow-1: 0 6px 18px rgba(3,3,3,0.45);
+}
+
+/* Utilities: glass style */
+.u-glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+}
+
+/* Floating header example */
+.header-floating {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  top: 12px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  z-index: 60;
+  box-shadow: var(--shadow-1);
+}
+
+/* Bottom nav skeleton for mobile */
+.bottom-nav {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px;
+  z-index: 70;
+  border-radius: 999px;
+}
+
+/* Smart Discount Card base */
+.smart-discount {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: transform var(--dur-base) var(--easing), box-shadow var(--dur-short) var(--easing);
+}
+
+.smart-discount--pre {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+}
+
+.smart-discount--expanded {
+  transform: scale(1.02);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+}
