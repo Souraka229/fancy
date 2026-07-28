@@ -355,7 +355,7 @@ export function AdminPanel() {
         .from('order_items')
         .select('*, products(*)');
 
-      const totalRevenue = ordersData?.reduce((sum, order) => sum + (order.final_amount || 0), 0) || 0;
+      // totalRevenue already computed above
       const averageCart = ordersData?.length > 0 ? totalRevenue / ordersData.length : 0;
       
       // Calculate top products
