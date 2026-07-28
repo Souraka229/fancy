@@ -130,7 +130,7 @@ export default function TrackPage() {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <Text variant="muted" size="sm">Numéro de suivi</Text>
-                <Text size="2xl" className="font-medium">#{trackingNumber}</Text>
+                <Text size="xl" className="font-medium">#{trackingNumber}</Text>
               </div>
               <Badge variant={
                 order.order_status === 'cancelled' ? 'error' :
