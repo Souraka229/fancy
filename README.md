@@ -50,4 +50,28 @@ Production checklist (short):
 5. Configure Vercel project (or chosen host) with environment variables and set up automatic deploys from main.
 6. Enable monitoring and backups in Supabase; set up basic alerts for errors and low stock.
 
-To mark PR ready and merge: this repo contains a draft PR with the changes. CI workflow added (.github/workflows/ci.yml). After secrets are set and migrations applied, merge to main and deploy.
+Automated deploy (CI):
+- A `deploy-supabase` workflow and `scripts/deploy_supabase.sh` are provided which will run SQL migrations and deploy Edge Functions using the supabase CLI. The workflow is configured to run on push to `main` when secrets are available.
+
+Secrets required for automated deploy (set in GitHub or Vercel):
+- SUPABASE_URL (your project ref URL or ID)
+- SUPABASE_SERVICE_ROLE_KEY (server-only)
+- SUPABASE_ACCESS_TOKEN (for supabase CLI in CI)
+- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER (optional — for WhatsApp)
+
+Security notes:
+- Do NOT commit service keys. Store them in deployment secrets only.
+- The Edge Function `supabase/functions/create_order_webhook` is a template that sends WhatsApp messages via Twilio when called; it must be deployed and secrets configured to be active.
+
+To finalize production-ready release (automated):
+1. Add the secrets above to GitHub Actions or Vercel environment.
+2. Push to `main` — CI will run build and the deploy workflow (if enabled).
+3. Verify migrations in Supabase SQL editor and ensure RLS policies are applied (supabase/policies/*.sql provided).
+4. Run QA checklist: product pages, checkout, /track-order, notifications, admin.
+
+The repository includes:
+- migrations/ for SQL schema updates
+- functions/ template for Edge Functions
+- scripts/deploy_supabase.sh to run migrations and deploy functions via supabase CLI
+
+Once secrets are set and you push to main, CI will apply migrations and deploy the Edge Function automatically. If anything fails, CI logs provide troubleshooting details.
