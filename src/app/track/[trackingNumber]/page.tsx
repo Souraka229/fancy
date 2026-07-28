@@ -21,7 +21,9 @@ const statusSteps = [
 export default function TrackPage() {
   const params = useParams();
   const router = useRouter();
-  const trackingNumber = params.trackingNumber as string;
+  const trackingNumber = (params?.trackingNumber as string) || '';
+
+  // trackingNumber may be empty during initial renders; loadOrder handles it gracefully.
   
   const [order, setOrder] = useState<any>(null);
   const [orderItems, setOrderItems] = useState<any[]>([]);
