@@ -4,10 +4,17 @@ export type Product = {
   name: string
   description?: string
   price: number
+  promoPrice?: number
   discount?: number
   stock?: number
   images?: string[]
+  image?: string
+  imageAlt?: string
   badges?: string[]
+  badge?: string
+  rating?: number
+  category?: string
+  accent?: string
   is_sponsored?: boolean
   slug?: string
 }
