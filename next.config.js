@@ -9,6 +9,9 @@ const nextConfig = {
   // set turbopack root to avoid workspace inference issues
   turbopack: {
     root: './'
+  },
+  experimental: {
+    appDir: false
   }
 }
 
