@@ -36,42 +36,80 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 
-## Project notes & production checklist
+## KNOWN ISSUES & REQUIRED PR CHECKLIST
 
-- Frontend: Next.js + Tailwind + Framer Motion
-- Backend: Supabase (Postgres, Auth, Storage, Edge Functions) — configure policies and service keys in Supabase dashboard.
-- design-system.tokens.css is included: import it from your globals.css
+Avant d'approuver ou de merger une PR qui touche ce dépôt, elle doit résoudre ou documenter explicitement chaque point ci‑dessous (si applicable au scope de la PR). Toute PR qui n'adresse pas ces éléments sera renvoyée.
 
-Production checklist (short):
-1. Set secrets in deployment platform / GitHub repo: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY, NEXT_PUBLIC_SITE_URL.
-2. Run SQL migrations in supabase/migrations (02_add_seo_fields.sql) via Supabase SQL editor or migration tooling.
-3. Configure Supabase RLS policies for orders and private data.
-4. Configure Supabase Storage + CDN and populate product.image_urls with CDN links.
-5. Configure Vercel project (or chosen host) with environment variables and set up automatic deploys from main.
-6. Enable monitoring and backups in Supabase; set up basic alerts for errors and low stock.
+1) Build et TypeScript
+- Problèmes fréquents rencontrés : imports manquants (ex. components/ui/GlassCard), types incompatibles sur app layouts (params promis), fichiers Supabase inclus dans le type-check Next.
+- Exigence PR : passer `npm run build` localement et coller un extrait des erreurs résolues dans la description. Ne pas committer de hacks non expliqués.
 
-Automated deploy (CI):
-- A `deploy-supabase` workflow and `scripts/deploy_supabase.sh` are provided which will run SQL migrations and deploy Edge Functions using the supabase CLI. The workflow is configured to run on push to `main` when secrets are available.
+2) Composants manquants / dépendances
+- Rechercher et corriger imports cassés (ex. src/lib/products, components manquants). Ajouter fallback minimal si nécessaire avec commentaire TODO.
+- Exigence PR : ajouter tests manuels rapides (note dans PR) ou unité montrant le composant monte.
 
-Secrets required for automated deploy (set in GitHub or Vercel):
-- SUPABASE_URL (your project ref URL or ID)
-- SUPABASE_SERVICE_ROLE_KEY (server-only)
-- SUPABASE_ACCESS_TOKEN (for supabase CLI in CI)
-- TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER (optional — for WhatsApp)
+3) Tailwind & styles
+- Problèmes : config Tailwind non appliquée (tokens non générés), classes custom manquantes (max-w-container-xl), mauvais chemins d'import CSS.
+- Exigence PR : vérifier génération CSS, inclure commande de build CSS réussie et screenshots si le visuel est impacté.
 
-Security notes:
-- Do NOT commit service keys. Store them in deployment secrets only.
-- The Edge Function `supabase/functions/create_order_webhook` is a template that sends WhatsApp messages via Twilio when called; it must be deployed and secrets configured to be active.
+4) Double navigation / layout
+- Problème : navigation dupliquée (SiteShell + pages individuelles). Impact UX majeur.
+- Exigence PR : normaliser l'usage (un seul SiteShell/root navigation). PR doit corriger et expliquer.
 
-To finalize production-ready release (automated):
-1. Add the secrets above to GitHub Actions or Vercel environment.
-2. Push to `main` — CI will run build and the deploy workflow (if enabled).
-3. Verify migrations in Supabase SQL editor and ensure RLS policies are applied (supabase/policies/*.sql provided).
-4. Run QA checklist: product pages, checkout, /track-order, notifications, admin.
+5) Panier / état client
+- Problème : plusieurs clés localStorage ('cart', 'daydays-fancy-cart') causent divergence d'état et badges inactifs.
+- Exigence PR : centraliser à `useCart` et migrer data si présente (migration utilitaire incluse dans PR).
 
-The repository includes:
-- migrations/ for SQL schema updates
-- functions/ template for Edge Functions
-- scripts/deploy_supabase.sh to run migrations and deploy functions via supabase CLI
+6) Routes & cohérence (app vs pages)
+- Problème : routes dupliquées (/product/[slug] vs /products/[slug]) et fichiers déplacés provoquant mismatch.
+- Exigence PR : garder une seule source de vérité pour chaque route et ajouter redirections si nécessaire.
 
-Once secrets are set and you push to main, CI will apply migrations and deploy the Edge Function automatically. If anything fails, CI logs provide troubleshooting details.
+7) PWA / assets
+- Problèmes : icônes manquantes (icon-192.png, icon-512.png), service worker en cache-first sans stratégie de versioning.
+- Exigence PR : ajouter assets manquants, implémenter cache versioning et stratégie 'network-first' pour SW, ou documenter choix.
+
+8) Sécurité & secrets
+- Problèmes : supabase service role exposé par erreur possible, Edge functions templates non déployées.
+- Exigence PR : ne jamais inclure secrets. Toute PR modifiant déploiement/CI doit lister les secrets nécessaires et où les ajouter.
+
+9) Migrations DB & Supabase
+- Problème : migrations fournies mais non exécutées (02_add_seo_fields.sql, 03_orders_schema.sql, 04_create_order_rpc.sql).
+- Exigence PR : inclure un plan de migration (commande supabase) et, si possible, un script idempotent. CI doit exécuter migrations sur main seulement.
+
+10) Tests & QA
+- Problème : pas d'e2e pour checkout / orders / WhatsApp flow.
+- Exigence PR : ajouter tests unitaires/integ ciblés pour code modifié; pour changements critiques (checkout, RPC) inclure test e2e ou playbook de QA détaillé.
+
+11) SEO & Performance
+- Exigence PR : tout changement public (product page, images) doit vérifier meta tags, OpenGraph, sitemap generation et ne pas dégrader Lighthouse (baseline >90 visé). Documenter impact.
+
+12) Accessibilité
+- Exigence PR : pas de <button> imbriqué dans <a> / <Link>. Vérifier accessibilité basique pour composants modifiés.
+
+13) Documentation & Release
+- Exigence PR : mettre à jour README (ou /docs) si la PR change les procédures de build, secrets requis, ou le déploiement.
+
+Template PR (obligatoire) — inclure au début de chaque description PR:
+- Objet succinct
+- Checklist: Build ✅, Types ✅, Lint ✅, Tests ✅, Migration DB (oui/non + commandes), Secrets requis (liste), Impact UI (screenshot si UI)
+- Validation locale: commandes exécutées
+
+Si une PR ne peut pas corriger immédiatement un problème listé (ex. nécessite secret ou migration prod), documenter clairement la limitation et ajouter un ticket TODO associé.
+
+---
+
+SECTION OPÉRATIONNELLE RAPIDE
+
+Commandes utiles locales:
+- npm install
+- npm run dev
+- npm run build
+- npm run lint
+- scripts/deploy_supabase.sh (pour CI — nécessite SUPABASE_ACCESS_TOKEN et SUPABASE_SERVICE_ROLE_KEY)
+
+Contacts & ownership:
+- Responsable deploy / secrets: personne qui gère le compte Supabase / GitHub Actions (documenter dans l'équipe)
+
+---
+
+Ce README doit rester la référence. Toute personne qui travaille sur ce repo doit répondre à ces exigences avant de merger une PR. Si tu veux, j'ajoute aussi un GitHub ISSUE_TEMPLATE / PR_TEMPLATE automatique pour imposer la checklist.
