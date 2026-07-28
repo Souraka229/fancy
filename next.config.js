@@ -6,11 +6,9 @@ const nextConfig = {
       { protocol: 'https', hostname: '**' }
     ]
   },
-  experimental: {
-    turbopack: {
-      // set workspace root for Turbopack to avoid root inference issues
-      root: './'
-    }
+  // set turbopack root to avoid workspace inference issues
+  turbopack: {
+    root: './'
   }
 }
 
