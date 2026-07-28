@@ -37,9 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       orderItems.push({ product_id: prod.id, sku: prod.sku, name: prod.name, unit_price: unitPrice, quantity: item.quantity, total_price: lineTotal })
     }
 
-    // Optional shipping / fees
-    const shipping = payload.shipping || 0
-    total += shipping
+    // Optional shipping / fees (validated and available as `shipping` from parsed data)
+    total += (shipping || 0)
 
     // Generate unique 5-digit order number
     const orderNumber = await generateUniqueOrderNumber(supabase)
